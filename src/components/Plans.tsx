@@ -1,10 +1,12 @@
 import { Button } from '@/components/ui/button';
 import { Check, Star } from 'lucide-react';
+import { useState } from 'react';
+import SubscriptionModal from '@/components/SubscriptionModal';
 
 const plans = [
   {
     name: 'Basic',
-    price: '$299',
+    price: '₹499',
     period: '/month',
     description: 'Perfect for small landlords getting started',
     features: [
@@ -18,7 +20,7 @@ const plans = [
   },
   {
     name: 'Professional',
-    price: '$599',
+    price: '₹999',
     period: '/month',
     description: 'Best for growing rental businesses',
     features: [
@@ -34,7 +36,7 @@ const plans = [
   },
   {
     name: 'Enterprise',
-    price: '$1,299',
+    price: '₹9,999',
     period: '/month',
     description: 'For large-scale rental operations',
     features: [
@@ -52,11 +54,19 @@ const plans = [
 ];
 
 const Plans = () => {
+  const [selectedPlan, setSelectedPlan] = useState<typeof plans[0] | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const scrollToContact = () => {
     const element = document.getElementById('contact');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const handleSelectPlan = (plan: typeof plans[0]) => {
+    setSelectedPlan(plan);
+    setIsModalOpen(true);
   };
 
   return (
@@ -124,7 +134,7 @@ const Plans = () => {
 
                 {/* CTA Button */}
                 <Button
-                  onClick={scrollToContact}
+                  onClick={() => handleSelectPlan(plan)}
                   className={`w-full ${
                     plan.recommended
                       ? 'bg-gradient-accent hover:opacity-90'
@@ -153,6 +163,13 @@ const Plans = () => {
           </p>
         </div>
       </div>
+
+      {/* Subscription Modal */}
+      <SubscriptionModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        selectedPlan={selectedPlan}
+      />
     </section>
   );
 };
