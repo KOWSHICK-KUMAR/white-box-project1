@@ -32,6 +32,11 @@ const SubscriptionModal = ({ isOpen, onClose, selectedPlan }: SubscriptionModalP
 
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // Early return if selectedPlan is null
+  if (!selectedPlan) return null;
+
+  // Mobile-safe event handlers
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     
@@ -149,15 +154,15 @@ const SubscriptionModal = ({ isOpen, onClose, selectedPlan }: SubscriptionModalP
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-[95vw] max-w-md max-h-[95vh] overflow-y-auto p-4 sm:p-6">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 text-lg">
             <CreditCard className="h-5 w-5" />
             Subscribe to {selectedPlan.name} Plan
           </DialogTitle>
         </DialogHeader>
         
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Plan Summary */}
           <div className="bg-muted p-4 rounded-lg">
             <div className="flex justify-between items-center">
@@ -171,15 +176,15 @@ const SubscriptionModal = ({ isOpen, onClose, selectedPlan }: SubscriptionModalP
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
             {/* Personal Information */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold flex items-center gap-2">
+            <div className="space-y-3 sm:space-y-4">
+              <h3 className="text-base sm:text-lg font-semibold flex items-center gap-2">
                 <User className="h-4 w-4" />
                 Personal Information
               </h3>
               
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-3 sm:gap-4">
                 <div>
                   <Label htmlFor="email">Email Address</Label>
                   <Input
@@ -208,8 +213,8 @@ const SubscriptionModal = ({ isOpen, onClose, selectedPlan }: SubscriptionModalP
             </div>
 
             {/* Payment Information */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold flex items-center gap-2">
+            <div className="space-y-3 sm:space-y-4">
+              <h3 className="text-base sm:text-lg font-semibold flex items-center gap-2">
                 <Lock className="h-4 w-4" />
                 Payment Information
               </h3>
@@ -324,22 +329,22 @@ const SubscriptionModal = ({ isOpen, onClose, selectedPlan }: SubscriptionModalP
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-3 pt-4">
+            <div className="flex flex-col sm:flex-row gap-3 pt-4">
               <Button
                 type="button"
                 variant="outline"
                 onClick={onClose}
-                className="flex-1"
+                className="w-full sm:flex-1 min-h-[44px]"
                 disabled={isProcessing}
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
-                className="flex-1"
+                className="w-full sm:flex-1 min-h-[44px]"
                 disabled={isProcessing}
               >
-                {isProcessing ? 'Processing...' : `Pay ${selectedPlan.price}`}
+                {isProcessing ? 'Processing...' : `Pay ${selectedPlan?.price || ''}`}
               </Button>
             </div>
           </form>
